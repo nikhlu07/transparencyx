@@ -251,7 +251,7 @@ async function uploadToBigQuery(dataset, paymentData) {
 }
 ```
 
-![bigquery](demo/images/a14.png)
+![bigquery](demo/images/a4.png)
 ### 3. AI-Enhanced Verification System
 
 Our system uses advanced AI to verify claims before they're approved:

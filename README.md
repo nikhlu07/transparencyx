@@ -29,7 +29,7 @@ In 2018, Indian journalist Gauri Lankesh was assassinated after investigating a 
 
 TransparencyX provides end-to-end transparency for government procurement through an innovative combination of blockchain, AI, and public oversight:
 
-![System Workflow](demo/images/workflow.png)
+![System Workflow](demo/images/rback.png)
 
 ### Complete Procurement Flow
 

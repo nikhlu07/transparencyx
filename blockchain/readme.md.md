@@ -1,16 +1,10 @@
 ClearGov.sol Technical Documentation
 Overview
-ClearGov.sol is the core smart contract powering TransparencyX, a corruption-proof government procurement system built for the PYUSD ClearGov Hackathon. Deployed on the Ethereum Sepolia testnet, it uses PYUSD stablecoin to ensure transparent budget management, claim processing, and payment flows across government, vendors, suppliers, sub-suppliers, and the public. The contract integrates with AI for automated fraud detection and Google Cloud Platform (GCP) Blockchain RPC for transaction tracing, addressing global corruption issues (e.g., $2T annual losses per UN estimates).
+ClearGov.sol is the backbone of TransparencyX, a corruption-proof government procurement system developed for the PYUSD ClearGov Hackathon. Deployed on Ethereum’s Sepolia testnet with PYUSD stablecoin, it ensures transparent budget management, claim processing, and payments across government, vendors, suppliers, sub-suppliers, and the public. The contract integrates AI for fraud detection and Google Cloud Platform (GCP) Blockchain RPC for transaction tracing, tackling global corruption (e.g., $2T annual losses per UN).
+Figure 1: TransparencyX system integrating ClearGov.sol with AI and GCP.
 Contract Architecture
-The contract employs Role-Based Access Control (RBAC) with a hierarchical structure to enforce permissions and prevent fraud:
-MainGovernment
-├── StateHeads
-│   └── Deputies
-│       └── Vendors
-│           └── Suppliers
-│               └── SubSuppliers
-└── Public (limited oversight)
-
+The contract uses Role-Based Access Control (RBAC) with a hierarchical structure to enforce permissions and prevent fraud. Below is the role hierarchy:
+Figure 2: Role-based hierarchy in ClearGov.sol.
 Role Definitions
 
 MainGovernment: Locks budgets, approves claims, assigns roles.
@@ -98,7 +92,7 @@ Budget Management
 lockBudget(uint256 amount, string memory fiscalYear):
 
 Role: onlyMainGovernment.
-Transfers PYUSD from the caller to the contract, locking it for a fiscal year.
+Transfers PYUSD to the contract, locking it for a fiscal year.
 Updates totalBudget and fiscalYearBudgets.
 Emits BudgetLocked.
 
@@ -125,14 +119,14 @@ Emits ClaimSubmitted.
 approveClaimByAI(uint256 claimId, bool isApproved, uint256 anomalyScore):
 
 Role: Restricted to aiSystemAddress.
-Updates claim approval status and anomaly score based on AI analysis.
+Updates claim approval and anomaly score.
 Emits ClaimAIReviewed.
 
 
 payClaim(uint256 claimId):
 
 Role: onlyMainGovernment.
-Transfers PYUSD to the vendor if the claim is approved and budget exists.
+Transfers PYUSD to the vendor if approved.
 Marks claim as paid.
 Emits ClaimPaid.
 
@@ -143,16 +137,16 @@ Supplier Payment Chain
 paySupplier(uint256 claimId, address supplier, uint256 amount):
 
 Role: onlyVendor.
-Transfers PYUSD from vendor to supplier post-claim payment.
-Stores in supplierPayments and vendorSupplierPayments.
+Transfers PYUSD to supplier post-claim payment.
+Stores in supplierPayments.
 Emits SupplierPaid.
 
 
 paySubSupplier(uint256 supplierPaymentId, address subSupplier, uint256 amount):
 
 Role: onlySupplier.
-Transfers PYUSD from supplier to sub-supplier.
-Stores in subSupplierPayments and supplierSubPayments.
+Transfers PYUSD to sub-supplier.
+Stores in subSupplierPayments.
 Emits SubSupplierPaid.
 
 
@@ -161,17 +155,17 @@ Public Challenge System
 
 stakeChallenge(uint256 claimId, string memory reason):
 
-Stakes 1 PYUSD (6 decimals) to challenge an approved claim.
-Stores in challenges and claimChallenges.
+Stakes 1 PYUSD to challenge a claim.
+Stores in challenges.
 Emits ChallengeStaked.
 
 
 resolveChallenge(uint256 challengeId, bool isValid):
 
 Role: onlyMainGovernment.
-Resolves a challenge:
-If valid: Returns stake + 5 PYUSD reward; flags claim as unapproved.
-If invalid: Stake is retained by the contract.
+Resolves challenge:
+Valid: Returns stake + 5 PYUSD; flags claim as unapproved.
+Invalid: Retains stake.
 
 
 Emits ChallengeResolved.
@@ -180,11 +174,11 @@ Emits ChallengeResolved.
 
 View Functions
 
-getClaim(uint256 claimId): Returns claim details (vendor, amount, IPFS hash, etc.).
-getVendorClaimCount(address vendor): Returns number of claims by a vendor.
-getSupplierPayments(uint256 claimId): Returns payment details for suppliers.
-getSubSupplierPayments(uint256 supplierPaymentId): Returns sub-supplier payment details.
-getChallenges(uint256 claimId): Returns challenge details for a claim.
+getClaim(uint256 claimId): Returns claim details.
+getVendorClaimCount(address vendor): Returns vendor’s claim count.
+getSupplierPayments(uint256 claimId): Returns supplier payments.
+getSubSupplierPayments(uint256 supplierPaymentId): Returns sub-supplier payments.
+getChallenges(uint256 claimId): Returns challenges for a claim.
 
 Events
 event BudgetLocked(uint256 amount, string fiscalYear, address indexed locker);
@@ -199,52 +193,60 @@ event ChallengeResolved(uint256 indexed challengeId, uint256 indexed claimId, bo
 
 Security Considerations
 
-RBAC: Strict modifiers (onlyMainGovernment, etc.) prevent unauthorized access.
-Reentrancy: State updates occur before external calls (e.g., pyusd.transfer).
-Input Validation: Checks for valid amounts, roles, and claim statuses.
-Budget Integrity: Prevents double-spending via departmentBudgets and totalBudget checks.
-Payment Protection: Verifies PYUSD transfers with return values.
-Challenge System: 1 PYUSD stake deters spam; rewards incentivize valid challenges.
+RBAC: Strict modifiers prevent unauthorized access.
+Reentrancy: State updates precede external calls.
+Input Validation: Validates amounts, roles, and statuses.
+Budget Integrity: Prevents double-spending.
+Payment Protection: Verifies PYUSD transfers.
+Challenge System: Stake deters spam; rewards incentivize scrutiny.
+
+Repository Structure
+The blockchain-related files are organized by network:
+blockchain/
+├── holesky/
+│   ├── ClearGov.sol
+│   └── MockPYUSD.sol
+├── sepolia/
+│   ├── ClearGov.sol
+│   └── PYUSD.json
+
+
+Holesky: Includes MockPYUSD.sol for testing since Paxos doesn’t provide PYUSD tokens.
+Sepolia: Uses official PYUSD ABI (PYUSD.json) for real token interactions.
 
 Deployment Instructions
+Figure 3: Deployment process for ClearGov.sol on Sepolia and Holesky.
+Sepolia Deployment
 
-Sepolia Deployment:
+Obtain PYUSD from Paxos faucet (0xYourWallet).
+Deploy ClearGov.sol with Sepolia PYUSD address via Hardhat/Remix.
+Assign MainGovernment role to deployer.
+MainGovernment assigns StateHead, Deputy, Vendor, Supplier, SubSupplier roles.
 
-Obtain PYUSD from the Paxos faucet (0xYourWallet).
-Deploy ClearGov.sol using Hardhat/Remix, passing the Sepolia PYUSD address as a constructor parameter.
-Assign MainGovernment role to the deployer.
-MainGovernment assigns StateHead roles, who assign Deputy, Vendor, Supplier, and SubSupplier roles.
+Holesky Deployment
 
-
-Holesky Deployment:
-
-Paxos does not provide PYUSD tokens on Holesky.
 Deploy MockPYUSD.sol (ERC20 mock) to simulate PYUSD.
-Deploy ClearGov.sol with the MockPYUSD address.
-Follow the same role assignment process as Sepolia.
+Deploy ClearGov.sol with MockPYUSD address.
+Follow same role assignment as Sepolia.
 
+Role Setup
 
-Role Setup:
-
-MainGovernment: Locks initial budget via lockBudget.
-StateHeads: Allocates budgets to departments.
+MainGovernment: Locks budget via lockBudget.
+StateHeads: Allocates budgets.
 Deputies: Registers vendors.
 Vendors: Registers suppliers.
 Suppliers: Registers sub-suppliers.
 
-
-
 Integration with TransparencyX
 
-AI: approveClaimByAI connects to Google Document AI and scikit-learn for invoice validation and anomaly detection.
-GCP Blockchain RPC: Uses debug_traceTransaction and trace_block to audit PYUSD flows (e.g., paySupplier, stakeChallenge).
-BigQuery: Logs claims, payments, and challenges for analytics.
-Web Interface: Interacts with submitClaim, paySupplier, and stakeChallenge via a frontend.
+AI: approveClaimByAI links to Document AI and scikit-learn.
+GCP RPC: Traces transactions (debug_traceTransaction) for auditing.
+BigQuery: Logs claims and payments.
+Web: Interacts with contract functions.
 
 Hackathon Alignment
 
-Innovation: Combines PYUSD, RBAC, and public challenges for transparent procurement.
-GCP Advantage: Leverages free RPC calls for deep transaction tracing.
-Functionality: Tracks full payment chains, addressing corruption.
-Accessibility: Public view functions (getClaim, getSupplierPayments) ensure transparency.
-
+Innovation: Integrates PYUSD, AI, and public oversight.
+GCP Advantage: Uses free RPC for transaction tracing.
+Functionality: Tracks payment chains transparently.
+Accessibility: Public view functions ensure openness.

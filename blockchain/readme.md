@@ -1,6 +1,6 @@
 # TransparencyX: Blockchain-Powered Government Procurement
 
-![TransparencyX System Architecture](https://via.placeholder.com/800x400?text=TransparencyX+System+Architecture)
+![TransparencyX System Architecture](demo/images/blockchain.png)
 
 ## 🌟 Overview
 
@@ -17,7 +17,7 @@ TransparencyX is a corruption-proof government procurement system built on Ether
 
 TransparencyX implements a sophisticated role-based access control (RBAC) system that mirrors government procurement hierarchies while enforcing transparency at every level:
 
-![Role Hierarchy](https://via.placeholder.com/600x400?text=TransparencyX+Role+Hierarchy)
+![Role Hierarchy](demo/images/controlsystem.png)
 
 1. **MainGovernment** locks budgets and approves final claims
 2. **StateHeads** allocate budgets to departments
@@ -61,7 +61,7 @@ ClearGov.sol
 
 ## 📊 Implementation
 
-![Deployment Workflow](https://via.placeholder.com/700x300?text=TransparencyX+Deployment+Workflow)
+
 
 TransparencyX is deployed on:
 - **Sepolia Testnet**: Using official PYUSD token
@@ -83,7 +83,7 @@ TransparencyX is deployed on:
 
 ## 🚀 Getting Started
 
-Visit our [GitHub repository](https://github.com/transparencyx) for detailed deployment instructions and documentation.
+Visit our [GitHub repository](https://github.com/nikhlu07/transparencyx) for detailed deployment instructions and documentation.
 
 ## 🌐 Impact
 

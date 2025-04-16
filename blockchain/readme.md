@@ -17,7 +17,7 @@ TransparencyX is a corruption-proof government procurement system built on Ether
 
 TransparencyX implements a sophisticated role-based access control (RBAC) system that mirrors government procurement hierarchies while enforcing transparency at every level:
 
-![Role Hierarchy](![Blockchain]demo/images/controlsystem.png)
+![Role Hierarchy]![Blockchain](../demo/images/controlsystem.png)
 
 1. **MainGovernment** locks budgets and approves final claims
 2. **StateHeads** allocate budgets to departments

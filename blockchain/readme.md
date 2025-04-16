@@ -1,7 +1,6 @@
 # TransparencyX: Blockchain-Powered Government Procurement
 
-![TransparencyX System Architecture](![Blockchain](demo/images/blockchain.png)
-)
+![TransparencyX System Architecture]![Blockchain](../demo/images/blockchain.png)
 
 ## 🌟 Overview
 

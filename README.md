@@ -319,6 +319,8 @@ Our ML model looks for common patterns of procurement fraud:
 - **Unusual timing**: Suspicious patterns in submission timing
 - **Document irregularities**: Inconsistencies in invoice formatting or details
 
+![website](demo/images/web7.png)
+
 ### 4. Complete Payment Chain Tracking
 
 TransparencyX uniquely tracks the complete payment chain from government to end supplier:
@@ -381,7 +383,7 @@ function paySubSupplier(
     emit SubSupplierPaid(subPaymentId, supplierPaymentId, msg.sender, subSupplier, amount, description);
 }
 ```
-
+![website](demo/images/web8.png)
 ### 5. Public Challenge System
 
 TransparencyX empowers citizens to actively participate in procurement oversight:
@@ -457,6 +459,8 @@ function resolveChallenge(
 ```
 
 ## 🧪 Real-World Use Cases
+
+![website](demo/images/web5.png)
 
 ### Case 1: School Infrastructure Project
 
@@ -608,6 +612,8 @@ A department of transportation manages a major highway project:
 4. **BigQuery Storage**: Structured data stored in analytics-ready format
 5. **Dashboard Visualization**: Real-time monitoring and alerts
 
+![website](demo/images/ai3.png)
+
 ### Sample BigQuery Schema
 
 ```sql
@@ -654,6 +660,8 @@ CREATE TABLE IF NOT EXISTS `transparencyx.procurement.challenges` (
   `resolve_time` TIMESTAMP
 );
 ```
+
+![website](demo/images/ai4.png)
 
 ### Sample BigQuery Analytics
 

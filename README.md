@@ -6,7 +6,7 @@
 [![Network: Sepolia](https://img.shields.io/badge/Network-Sepolia-f16822.svg)](https://sepolia.etherscan.io/)
 [![AI: Document Processing](https://img.shields.io/badge/AI-Document_Processing-green.svg)](https://github.com/yourusername/TransparencyX)
 
-!(demo/images/web1.png)
+![website](demo/images/web1.png)
 ## 🌟 Vision: Ending Procurement Corruption Through Blockchain Transparency
 
 **TransparencyX** is a revolutionary decentralized, AI-enhanced government procurement system built on the Ethereum Sepolia testnet using PYUSD stablecoin. Our mission is to combat public sector corruption through immutable financial transparency, automated fraud detection, and public accountability mechanisms.
